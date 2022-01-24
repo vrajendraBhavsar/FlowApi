@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val data = flowOf("vraj", "Riti", "Bruno", "Zayn", "Ranbir")
+        val data = flowOf("vraj", "Riti", "Bruno", "Zayn", "Ranbir", "dualipa")
             .flowOn(Dispatchers.IO) //process background ma karava
 
         runBlocking {
