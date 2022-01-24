@@ -7,18 +7,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
-    //asFlow builder ->  To Convert list of data into Flow
+    //When to use Map ?
+/*
+*  - To make any changes/update/mapping which Flow is emitting, we can use Map for that
+*  - Actual output jode chhedchhad kari, desired output display karva
+* */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val data = listOf("vraj", "Riti", "Bruno", "Zayn", "Ranbir", "dualipa", "Niha").asFlow()
+        var data = flowOf("Vraj", "Riti", "Bruno", "Zayn", "ranbir", "dualipa", "Niha")
             .flowOn(Dispatchers.IO) //process background ma karava
 
         runBlocking {
-            data.collect {
-                Log.d("VRAJTEST", "onCreate: $it")
+            data
+                .map { name ->
+                    if (name.startsWith("R") || name.startsWith("N")) {
+                        "Miss $name"
+                    } else {
+                        "Mr $name"
+                    }
+                }
+                .collect {
+                Log.d("VRAJTEST", "Name of the person is $it")
             }
         }
     }
