@@ -39,10 +39,13 @@ class MainActivity : AppCompatActivity() {
                 Log.d("VRAJTEST", "Name of the person is $it")
             }
         }*/
-        testIntermediateFlowOperators()
+
+        /*testIntermediateFlowOperators()*/
+
+        testErrorHandling()
     }
 
-        private fun testIntermediateFlowOperators(){
+/*        private fun testIntermediateFlowOperators(){
             lifecycleScope.launchWhenStarted {
                 (1..5).asFlow()
 //                    .drop(2)    //1. removes first 2 items
@@ -58,6 +61,22 @@ class MainActivity : AppCompatActivity() {
 //                    }
                     .collect{
                         Log.d("VRAJTEST", "With drop:: $it")
+                    }
+            }
+        }*/
+
+        private fun testErrorHandling() {
+            lifecycleScope.launchWhenStarted {
+                (1..5)
+                    .asFlow()
+                    .onEach {
+                        if (it == 3) throw RuntimeException("Error on $it")
+                    }
+                    .catch {    //3 aavta error throw thashe, and niche no block execute thashe
+                        emitAll((6..10).asFlow())
+                    }
+                    .collect{
+                        Log.d("VRAJTEST", "testErrorHandling: $it")
                     }
             }
         }
