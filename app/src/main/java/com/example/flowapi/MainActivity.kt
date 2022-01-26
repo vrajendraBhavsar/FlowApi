@@ -21,15 +21,15 @@ class MainActivity : AppCompatActivity() {
         val data = flowOf(1,2,3,4,5,6,7,8,9,10,11,12,13,43,65,75,99,122)
             .flowOn(Dispatchers.IO) //process background ma karava
 
-        lifecycleScope.launchWhenStarted {
-            data
-                .filter {
-                    it%2 != 0   //odd
-                }
-                .collect{
-                    Log.d("VRAJTEST", "it%2 != 0 => $it")
-                }
-        }
+//        lifecycleScope.launchWhenStarted {
+//            data
+//                .filter {
+//                    it%2 != 0   //odd
+//                }
+//                .collect{
+//                    Log.d("VRAJTEST", "it%2 != 0 => $it")
+//                }
+//        }
         /*runBlocking {
             data
                 .filter { value->
@@ -39,5 +39,26 @@ class MainActivity : AppCompatActivity() {
                 Log.d("VRAJTEST", "Name of the person is $it")
             }
         }*/
+        testIntermediateFlowOperators()
     }
+
+        private fun testIntermediateFlowOperators(){
+            lifecycleScope.launchWhenStarted {
+                (1..5).asFlow()
+//                    .drop(2)    //1. removes first 2 items
+                    .take(3)    //2. take first 3 items
+//                    .map {    //3. to transform flow
+//                        "your number: $it * 2 => ${it*2}"
+//                    }
+//                    .flatMapConcat {    //4. To flat flow of a flow, you can modify data and EMIT it as well
+//                        flow {
+//                            emit(it)
+//                            emit(it*it)
+//                        }
+//                    }
+                    .collect{
+                        Log.d("VRAJTEST", "With drop:: $it")
+                    }
+            }
+        }
 }
