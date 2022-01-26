@@ -72,8 +72,15 @@ class MainActivity : AppCompatActivity() {
                     .onEach {
                         if (it == 3) throw RuntimeException("Error on $it")
                     }
-                    .catch {    //3 aavta error throw thashe, and niche no block execute thashe
+                    /*.catch {    //1. 3 aavta error throw thashe, and niche no block execute thashe
                         emitAll((6..10).asFlow())
+                    }*/
+                    .retryWhen { cause, attempt ->  //2. To handle error, based on attempts
+                        /*And finally an exception with the message “Error on 3” will be thrown.
+                        So, the flow will be retried 2 times(for attempt 0 and 1) before the failure.
+                        The flow is cold, so it will be executed, always, from the beginning.*/
+                        Log.d("VRAJTEST", "cause: $cause, attept: $attempt")
+                        attempt < 1
                     }
                     .collect{
                         Log.d("VRAJTEST", "testErrorHandling: $it")
